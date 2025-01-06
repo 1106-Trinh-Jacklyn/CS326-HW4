@@ -9,9 +9,9 @@ using namespace std;
 
 const int MAX = 100;
 
-void loadGrid(const string& filename, int grid[MAX][MAX], int& rows, int& cols);
-void rotateGrid(int grid[MAX][MAX], int rotatedGrid[MAX][MAX], int rows, int cols);
-void displayGrid(int grid[MAX][MAX], int rows, int cols);
+void loadGrid(const string& filename, int& rows, int& cols, int grid[MAX][MAX]);
+void rotateGrid(int rows, int cols, int grid[MAX][MAX], int rotatedGrid[MAX][MAX]);
+void displayGrid(int rows, int cols, int grid[MAX][MAX]);
 
 int main(){
   string filename = "grid.txt";
@@ -19,18 +19,18 @@ int main(){
   int rotatedGrid[MAX][MAX];
   int rows, cols;
 
-  loadGrid(filename, grid, rows, cols);
+  loadGrid(filename, rows, cols, grid);
   cout << "Original Grid:" << endl;
-  displayGrid(grid, rows, cols);
+  displayGrid(rows, cols, grid);
 
-  rotateGrid(grid, rotatedGrid, rows, cols);
+  rotateGrid(rows, cols, grid, rotatedGrid);
   cout << "Rotated Grid:" << endl;
-  displayGrid(rotatedGrid, cols, rows);
+  displayGrid(cols, rows, rotatedGrid);
 
   return 0;
 }
 
-void loadGrid(const string& filename, int grid[MAX][MAX], int& rows, int& cols){
+void loadGrid(const string& filename, int& rows, int& cols, int grid[MAX][MAX]){
   ifstream file(filename);
 
   if(file.is_open()){
@@ -68,7 +68,7 @@ void loadGrid(const string& filename, int grid[MAX][MAX], int& rows, int& cols){
   }
 }
 
-void rotateGrid(int grid[MAX][MAX], int rotatedGrid[MAX][MAX], int rows, int cols){
+void rotateGrid(int rows, int cols, int grid[MAX][MAX], int rotatedGrid[MAX][MAX]){
   for(int i = 0; i < rows; i++){
     for(int j = 0; j < cols; j++){
       rotatedGrid[j][rows - 1 - i] = grid[i][j];
@@ -76,7 +76,7 @@ void rotateGrid(int grid[MAX][MAX], int rotatedGrid[MAX][MAX], int rows, int col
   }
 }
 
-void displayGrid(int grid[MAX][MAX], int rows, int cols){
+void displayGrid(int rows, int cols, int grid[MAX][MAX]){
   for(int i = 0; i < rows; i++){
     for(int j = 0; j < cols; j++){
       cout << grid[i][j] << " ";
