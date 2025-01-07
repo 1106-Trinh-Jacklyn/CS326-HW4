@@ -7,79 +7,91 @@
 
 using namespace std;
 
-#define MAX 100
+#define ROWS 5
+#define COLS 4
+#define FILENAME "grid.txt"
 
-void loadGrid(const string& filename, int& rows, int& cols, int grid[MAX][MAX]);
-void rotateGrid(int rows, int cols, int grid[MAX][MAX], int rotatedGrid[MAX][MAX]);
-void displayGrid(int rows, int cols, int grid[MAX][MAX]);
+void loadArray(ifstream& file, int& rows, int& cols, int array[][COLS]);
+void rotateArray(int rows, int cols, int inArray[][COLS], int outArray[][ROWS]);
+void displayArray1(int rows, int cols, int array[][COLS]);
+void displayArray2(int rows, int cols, int array[][ROWS]);
 
 int main(){
-  string filename = "grid.txt";
-  int grid[MAX][MAX];
-  int rotatedGrid[MAX][MAX];
   int rows, cols;
+  int grid[ROWS][COLS];
+  int rotatedGrid[COLS][ROWS];
 
-  loadGrid(filename, rows, cols, grid);
-  cout << "Original Grid:" << endl;
-  displayGrid(rows, cols, grid);
 
-  rotateGrid(rows, cols, grid, rotatedGrid);
-  cout << "Rotated Grid:" << endl;
-  displayGrid(cols, rows, rotatedGrid);
-
-  return 0;
-}
-
-void loadGrid(const string& filename, int& rows, int& cols, int grid[MAX][MAX]){
-  ifstream file(filename);
-
+  ifstream file(FILENAME);
   if(file.is_open()){
-    int value;
-    rows = 0;
-    cols = 0;
-
-    while(true){
-      int colCount = 0;
-
-      while(file >> value){
-        grid[rows][colCount++] = value;
-
-        if(file.peek() == '\n' || file.peek() == EOF){
-          break;
-        }
-      }
-
-      if(colCount > 0){
-        if(cols == 0){
-          cols = colCount;
-        }
-        rows++;
-      }
-
-      if(file.eof()){
-        break;
-      }
-    }
-
+    loadArray(file, rows, cols, grid);
     file.close();
   }
   else{
     throw "Error";
   }
+
+  cout << "Original Grid:" << endl;
+  displayArray1(rows, cols, grid);
+
+  rotateArray(rows, cols, grid, rotatedGrid);
+
+  cout << "Rotated Grid:" << endl;
+  displayArray2(cols, rows, rotatedGrid);
+
+  return 0;
 }
 
-void rotateGrid(int rows, int cols, int grid[MAX][MAX], int rotatedGrid[MAX][MAX]){
-  for(int i = 0; i < rows; i++){
-    for(int j = 0; j < cols; j++){
-      rotatedGrid[j][rows - 1 - i] = grid[i][j];
+void loadArray(ifstream& file, int& rows, int& cols, int array[][COLS]){
+  int value;
+  rows = 0;
+  cols = 0;
+
+  while(true){
+    int colCount = 0;
+
+    while(file >> value){
+      array[rows][colCount++] = value;
+
+       if(file.peek() == '\n' || file.peek() == EOF){
+         break;
+      }
+    }
+
+    if(colCount > 0){
+      if(cols == 0){
+        cols = colCount;
+      }
+      rows++;
+    }
+
+    if(file.eof()){
+      break;
     }
   }
 }
 
-void displayGrid(int rows, int cols, int grid[MAX][MAX]){
+void rotateArray(int rows, int cols, int inArray[][COLS], int outArray[][ROWS]){
   for(int i = 0; i < rows; i++){
     for(int j = 0; j < cols; j++){
-      cout << grid[i][j] << " ";
+      outArray[j][rows - 1 - i] = inArray[i][j];
+    }
+  }
+}
+
+void displayArray1(int rows, int cols, int array[][COLS]){
+  for(int i = 0; i < rows; i++){
+    for(int j = 0; j < cols; j++){
+      cout << array[i][j] << " ";
+    }
+    cout << endl;
+  }
+}
+
+void displayArray2(int rows, int cols, int array[][ROWS]){
+  for(int i = 0; i < rows; i++){
+    for(int j = 0; j < cols; j++){
+      cout << array[i][j] << " ";
     }
     cout << endl;
   }
