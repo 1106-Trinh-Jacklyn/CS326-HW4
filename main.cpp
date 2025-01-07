@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int MAX = 100;
+#define MAX 100
 
 void loadGrid(const string& filename, int& rows, int& cols, int grid[MAX][MAX]);
 void rotateGrid(int rows, int cols, int grid[MAX][MAX], int rotatedGrid[MAX][MAX]);
